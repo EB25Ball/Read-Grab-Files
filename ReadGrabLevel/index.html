@@ -19,7 +19,6 @@
             root = loadedRoot;
         });
 
-        // Create a Three.js scene
         var scene = new THREE.Scene();
         var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         var renderer = new THREE.WebGLRenderer();
@@ -47,6 +46,7 @@
                         var startY = node.levelNodeStart.position.y;
                         camera.position.set(startX, startY, startZ);
                     }
+                    if(node.levelNodeStatic){
                     var nodeshape = node.levelNodeStatic.shape;
                     var nodeX = node.levelNodeStatic.position.x;
                     var nodeZ = node.levelNodeStatic.position.z;
@@ -63,7 +63,7 @@
                     cube.scale.set(scaleX, scaleY, scaleZ);
                     scene.add(cube);
 
-                    console.log(node.levelNodeStatic);
+                    console.log(node.levelNodeStatic);}
                 });
 
                 renderer.render(scene, camera);
