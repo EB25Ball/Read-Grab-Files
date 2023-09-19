@@ -87,10 +87,10 @@
                         console.log(node.levelNodeStatic);
                     }
                 });
-
-                renderer.render(scene, camera,light);
-                const light = new THREE.AmbientLight( 0x404040 ); // soft white light
+const light = new THREE.AmbientLight( 0x404040 ); // soft white light
         scene.add( light );
+                renderer.render(scene, camera,light);
+                
             };
             reader.readAsArrayBuffer(file);
         });
