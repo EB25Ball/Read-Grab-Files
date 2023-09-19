@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Read Protobuf</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/protobufjs/6.11.2/protobuf.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js"></script>
 </head>
+
 <body>
     <input type="file" id="fileInput">
     <pre id="output"></pre>
@@ -12,7 +14,7 @@
 
     <script>
         var root = null;
-        protobuf.load(["types.proto", "level.proto"], function(err, loadedRoot) {
+        protobuf.load(["types.proto", "level.proto"], function (err, loadedRoot) {
             if (err) throw err;
             root = loadedRoot;
         });
@@ -24,29 +26,38 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById('canvas').appendChild(renderer.domElement);
 
-        document.getElementById('fileInput').addEventListener('change', function(e) {
+        document.getElementById('fileInput').addEventListener('change', function (e) {
             var file = e.target.files[0];
             if (!file) return;
 
             var reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 var Level = root.lookupType("COD.Level.Level");
                 var buffer = new Uint8Array(reader.result);
                 var message = Level.decode(buffer);
                 var object = Level.toObject(message, { longs: String, enums: String, bytes: String });
-
+                console.log(object);
+                console.log(object.levelNodes[0])
+                console.log(object.levelNodes[0].levelNodeStatic)
                 document.getElementById('output').textContent = JSON.stringify(object, null, 2);
-                object.levelNodes.forEach(function(node) {
+                object.levelNodes.forEach(function (node) {
+                    if (node.levelNodeStart) {
+                        var startX = node.levelNodeStart.position.x;
+                        var startZ = node.levelNodeStart.position.z;
+                        var startY = node.levelNodeStart.position.y;
+                        camera.position.set(startX, startY, startZ);
+                    }
                     var nodeshape = node.levelNodeStatic.shape;
-                    var nodeX= node.levelNodeStatic.position.x;
-                    var nodeZ=node.levelNodeStatic.position.z;
-                    var nodeY=node.levelNodeStatic.position.y;
-                    var scaleX= node.levelNodeStatic.scale.x;
-                    var scaleZ=node.levelNodeStatic.scale.z;
-                    var scaleY=node.levelNodeStatic.scale.y;
+                    var nodeX = node.levelNodeStatic.position.x;
+                    var nodeZ = node.levelNodeStatic.position.z;
+                    var nodeY = node.levelNodeStatic.position.y;
+
+                    var scaleX = node.levelNodeStatic.scale.x;
+                    var scaleZ = node.levelNodeStatic.scale.z;
+                    var scaleY = node.levelNodeStatic.scale.y;
                     // Create a cube and add it to the scene at the node position
                     var geometry = new THREE.BoxGeometry(1, 1, 1);
-                    var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+                    var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
                     var cube = new THREE.Mesh(geometry, material);
                     cube.position.set(nodeX, nodeY, nodeZ);
                     cube.scale.set(scaleX, scaleY, scaleZ);
@@ -55,11 +66,12 @@
                     console.log(node.levelNodeStatic);
                 });
 
-                // Render the scene
                 renderer.render(scene, camera);
+             
             };
             reader.readAsArrayBuffer(file);
         });
     </script>
 </body>
+
 </html>
