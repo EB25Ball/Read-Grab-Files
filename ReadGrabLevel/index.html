@@ -26,7 +26,7 @@
                 var buffer = new Uint8Array(reader.result);
                 var message = Level.decode(buffer);
                 var object = Level.toObject(message, { longs: String, enums: String, bytes: String });
-                for (let levelNodeStatic of object.levelNodes.levelNodeStatic) {
+                for (let levelNodeStatic of object["levelNodes"]["levelNodeStatic"]) {
                     console.log(levelNodeStatic);
                 }
                 document.getElementById('output').textContent = JSON.stringify(object, null, 2);
