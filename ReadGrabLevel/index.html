@@ -28,7 +28,7 @@
                 var object = Level.toObject(message, { longs: String, enums: String, bytes: String });
 
                 document.getElementById('output').textContent = JSON.stringify(object, null, 2);
-                console.log(object);
+                console.log(object.creators);
             };
             reader.readAsArrayBuffer(file);
         });
