@@ -74,7 +74,7 @@
                         }
                         const texture = new THREE.TextureLoader().load('./default_colored-803ae9d6.png' ); 
                         var geometry = new THREE.BoxGeometry(1, 1, 1);
-                        var material = new THREE.MeshBasicMaterial({ color: hexColor });
+                        var material = new THREE.MeshStandardMaterial({ color: hexColor, map:texture });
                         var cube = new THREE.Mesh(geometry, material);
                         cube.position.set(nodeX, nodeY, nodeZ);
                         cube.scale.set(scaleX, scaleY, scaleZ);
