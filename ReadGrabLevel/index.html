@@ -31,10 +31,10 @@
 
         var scene = new THREE.Scene();
         var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const light = new THREE.AmbientLight( 0x404040 ); // soft white light
-        scene.add( light );
+        const light = new THREE.AmbientLight(0x404040); // soft white light
+        scene.add(light);
         var renderer = new THREE.WebGLRenderer();
-        
+
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById('canvas').appendChild(renderer.domElement);
 
@@ -75,9 +75,9 @@
                             var b = node.levelNodeStatic.color.b * 254;
                             colorrgb = rgbToHex(r, g, b);
                         }
-                        const texture = new THREE.TextureLoader().load('./default_colored-803ae9d6.png' ); 
+                        const texture = new THREE.TextureLoader().load('./default_colored-803ae9d6.png');
                         var geometry = new THREE.BoxGeometry(1, 1, 1);
-                        var material = new THREE.MeshBasicMaterial({ color: hexColor, map:texture  });
+                        var material = new THREE.MeshBasicMaterial({ color: hexColor, map: texture });
                         var cube = new THREE.Mesh(geometry, material);
                         cube.position.set(nodeX, nodeY, nodeZ);
                         cube.scale.set(scaleX, scaleY, scaleZ);
@@ -87,10 +87,10 @@
                         console.log(node.levelNodeStatic);
                     }
                 });
-const light = new THREE.AmbientLight( 0x404040 ); // soft white light
-        scene.add( light );
-                renderer.render(scene, camera,light);
-                
+                const light = new THREE.AmbientLight(0x404040); // soft white light
+                scene.add(light);
+                renderer.render(scene, camera, light);
+
             };
             reader.readAsArrayBuffer(file);
         });
