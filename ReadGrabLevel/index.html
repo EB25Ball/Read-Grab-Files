@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Read Protobuf</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/protobufjs/6.11.2/protobuf.min.js"></script>
+</head>
+<body>
+    <input type="file" id="fileInput">
+    <pre id="output"></pre>
+
+    <script>
+        var root = null;
+        protobuf.load(["types.proto", "level.proto"], function(err, loadedRoot) {
+            if (err) throw err;
+            root = loadedRoot;
+        });
+
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            var file = e.target.files[0];
+            if (!file) return;
+
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var Level = root.lookupType("COD.Level.Level");
+                var buffer = new Uint8Array(reader.result);
+                var message = Level.decode(buffer);
+                var object = Level.toObject(message, { longs: String, enums: String, bytes: String });
+                document.getElementById('output').textContent = JSON.stringify(object, null, 2);
+            };
+            reader.readAsArrayBuffer(file);
+        });
+    </script>
+</body>
+</html>
