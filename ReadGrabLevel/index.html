@@ -3,6 +3,7 @@
 <head>
     <title>Read Protobuf</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/protobufjs/6.11.2/protobuf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js"></script>
 </head>
 <body>
     <input type="file" id="fileInput">
@@ -25,6 +26,9 @@
                 var buffer = new Uint8Array(reader.result);
                 var message = Level.decode(buffer);
                 var object = Level.toObject(message, { longs: String, enums: String, bytes: String });
+                for (let levelNodeStatic of object.levelNodes.levelNodeStatic) {
+                    console.log(levelNodeStatic);
+                }
                 document.getElementById('output').textContent = JSON.stringify(object, null, 2);
             };
             reader.readAsArrayBuffer(file);
