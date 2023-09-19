@@ -28,7 +28,9 @@
                 var object = Level.toObject(message, { longs: String, enums: String, bytes: String });
 
                 document.getElementById('output').textContent = JSON.stringify(object, null, 2);
-                console.log(object.creators);
+                object.levelNodes.forEach(function(node) {
+    console.log(node.levelnodestatics);
+});
             };
             reader.readAsArrayBuffer(file);
         });
