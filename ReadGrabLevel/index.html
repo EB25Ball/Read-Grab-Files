@@ -8,6 +8,7 @@
 <body>
     <input type="file" id="fileInput">
     <pre id="output"></pre>
+    <div id="canvas"></div>
 
     <script>
         var root = null;
@@ -15,6 +16,13 @@
             if (err) throw err;
             root = loadedRoot;
         });
+
+        // Create a Three.js scene
+        var scene = new THREE.Scene();
+        var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('canvas').appendChild(renderer.domElement);
 
         document.getElementById('fileInput').addEventListener('change', function(e) {
             var file = e.target.files[0];
@@ -29,8 +37,26 @@
 
                 document.getElementById('output').textContent = JSON.stringify(object, null, 2);
                 object.levelNodes.forEach(function(node) {
-    console.log(node.levelNodeStatic);
-});
+                    var nodeshape = node.levelNodeStatic.shape;
+                    var nodeX= node.levelNodeStatic.position.x;
+                    var nodeZ=node.levelNodeStatic.position.z;
+                    var nodeY=node.levelNodeStatic.position.y;
+                    var scaleX= node.levelNodeStatic.scale.x;
+                    var scaleZ=node.levelNodeStatic.scale.z;
+                    var scaleY=node.levelNodeStatic.scale.y;
+                    // Create a cube and add it to the scene at the node position
+                    var geometry = new THREE.BoxGeometry(1, 1, 1);
+                    var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+                    var cube = new THREE.Mesh(geometry, material);
+                    cube.position.set(nodeX, nodeY, nodeZ);
+                    cube.scale.set(scaleX, scaleY, scaleZ);
+                    scene.add(cube);
+
+                    console.log(node.levelNodeStatic);
+                });
+
+                // Render the scene
+                renderer.render(scene, camera);
             };
             reader.readAsArrayBuffer(file);
         });
